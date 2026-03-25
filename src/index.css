@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 30% 97%;
+    --foreground: 25 20% 20%;
+    --card: 38 28% 95%;
+    --card-foreground: 25 20% 20%;
+    --popover: 38 28% 95%;
+    --popover-foreground: 25 20% 20%;
+    --primary: 25 25% 35%;
+    --primary-foreground: 38 28% 97%;
+    --secondary: 35 25% 85%;
+    --secondary-foreground: 25 20% 20%;
+    --muted: 36 20% 90%;
+    --muted-foreground: 25 15% 50%;
+    --accent: 35 30% 78%;
+    --accent-foreground: 25 20% 20%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 35 20% 85%;
+    --input: 35 20% 85%;
+    --ring: 25 25% 35%;
+    --radius: 0.75rem;
+
+    --warm-offwhite: 40 35% 97%;
+    --sand: 35 30% 80%;
+    --brown: 25 30% 28%;
+    --brown-light: 25 25% 45%;
+
+    --font-cormorant: 'Cormorant Garamond', serif;
+    --font-jost: 'Jost', sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-jost;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-cormorant;
+  }
+}
