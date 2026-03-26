@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-export default function HeroCarousel({ slides = [], brandName = 'Lena Neuropsicologa' }) {
+export default function HeroCarousel({ slides = [], brandName = '' }) {
   const [current, setCurrent] = useState(0)
   const [dir, setDir] = useState(1)
 
