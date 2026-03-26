@@ -44,9 +44,7 @@ export default async (request) => {
     },
   })
 
-  const siteUrl = process.env.URL || process.env.DEPLOY_PRIME_URL || process.env.DEPLOY_URL || ''
-  const path = `/.netlify/functions/site-asset?key=${encodeURIComponent(key)}`
-  const url = siteUrl ? `${siteUrl}${path}` : path
+  const url = `/.netlify/functions/site-asset?key=${encodeURIComponent(key)}`
 
   return Response.json({ ok: true, key, url })
 }
