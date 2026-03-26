@@ -6,41 +6,74 @@ import { fetchSiteContent } from '@/lib/api'
 const LOCAL_STORAGE_KEY = 'lena-site-content'
 
 function readLocalContent() {
-  if (typeof window === 'undefined') return defaultSiteContent
+  if (typeof window === 'undefined') return null
 
   try {
     const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY)
-    if (!raw) return defaultSiteContent
+    if (!raw) return null
     return normalizeSiteContent(JSON.parse(raw))
   } catch {
-    return defaultSiteContent
+    return null
   }
 }
 
+function hasUsableContent(data) {
+  return !!(
+    data &&
+    typeof data === 'object' &&
+    data.brandName &&
+    Array.isArray(data.heroSlides) &&
+    data.heroSlides.length > 0
+  )
+}
+
 export function useSiteContent() {
-  const [content, setContent] = useState(defaultSiteContent)
+  const [content, setContent] = useState(() => readLocalContent() || defaultSiteContent)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [source, setSource] = useState('online')
+  const [source, setSource] = useState('local')
 
   const load = useCallback(async ({ silent = false } = {}) => {
     if (!silent) setLoading(true)
 
     try {
       const data = await fetchSiteContent()
-      const nextContent = normalizeSiteContent(data?.content ?? defaultSiteContent)
-      setContent(nextContent)
-      setSource(data?.source || 'online')
-      setError('')
+      const onlineContent = data?.content
 
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(nextContent))
+      if (hasUsableContent(onlineContent)) {
+        const nextContent = normalizeSiteContent(onlineContent)
+        setContent(nextContent)
+        setSource(data?.source || 'online')
+        setError('')
+
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(nextContent))
+        }
+      } else {
+        const localContent = readLocalContent()
+
+        if (localContent) {
+          setContent(localContent)
+          setSource('local')
+          setError('')
+        } else {
+          setContent(defaultSiteContent)
+          setSource('default')
+          setError('')
+        }
       }
     } catch (err) {
-      const fallback = readLocalContent()
-      setContent(fallback)
-      setSource('local')
-      setError(err.message || 'Não foi possível carregar o conteúdo online.')
+      const localContent = readLocalContent()
+
+      if (localContent) {
+        setContent(localContent)
+        setSource('local')
+      } else {
+        setContent(defaultSiteContent)
+        setSource('default')
+      }
+
+      setError(err?.message || 'Não foi possível carregar o conteúdo online.')
     } finally {
       setLoading(false)
     }
