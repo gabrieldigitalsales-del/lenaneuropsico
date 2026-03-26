@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Navbar brandName={content.brandName} />
-      <HeroCarousel brandName={content.brandName} slides={content.heroSlides} />
+      <HeroCarousel <HeroCarousel slides={content.heroSlides} />
       <AboutSection about={content.about} />
       <ServicesSection services={content.services} />
       <ContactSection contact={content.contact} />
