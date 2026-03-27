@@ -116,7 +116,7 @@ export default function AdminForm({ content, onSaved }) {
           <div className="rounded-xl border border-border bg-card p-4">
             <h2 className="font-cormorant text-2xl text-brown">Prévia rápida</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Confira o nome da marca, imagens e rodapé antes de salvar.
+              Confira rapidamente os principais pontos antes de salvar.
             </p>
             <div className="mt-4 space-y-4 text-sm">
               <div>
@@ -128,7 +128,7 @@ export default function AdminForm({ content, onSaved }) {
                 <p className="font-medium">{parsedPreview?.footerText || '—'}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Imagem Sobre</span>
+                <span className="text-muted-foreground">Imagem da profissional</span>
                 {parsedPreview?.about?.image ? (
                   <img src={parsedPreview.about.image} alt="Prévia" className="mt-2 h-40 w-full rounded-lg object-cover" />
                 ) : (
