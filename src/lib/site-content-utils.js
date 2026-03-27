@@ -4,11 +4,7 @@ export function normalizeSiteContent(payload = {}) {
   return {
     ...defaultSiteContent,
     ...payload,
-    heroSlides: safeArray(payload.heroSlides ?? defaultSiteContent.heroSlides).map((slide, index) => ({
-      ...defaultSiteContent.heroSlides?.[index],
-      ...slide,
-      highlights: safeArray(slide?.highlights ?? defaultSiteContent.heroSlides?.[index]?.highlights),
-    })),
+    heroSlides: normalizeHeroSlides(payload.heroSlides, defaultSiteContent.heroSlides),
     audience: {
       ...defaultSiteContent.audience,
       ...payload.audience,
@@ -34,6 +30,7 @@ export function normalizeSiteContent(payload = {}) {
       ...payload.about,
       paragraphs: safeArray(payload.about?.paragraphs ?? defaultSiteContent.about.paragraphs),
       stats: safeArray(payload.about?.stats ?? defaultSiteContent.about.stats),
+      image: payload.about?.image ?? defaultSiteContent.about.image,
     },
     socialProof: {
       ...defaultSiteContent.socialProof,
@@ -58,6 +55,27 @@ export function normalizeSiteContent(payload = {}) {
       ...payload.contact,
     },
   }
+}
+
+function normalizeHeroSlides(slides, fallbackSlides = []) {
+  const sourceSlides = safeArray(slides)
+
+  if (!sourceSlides.length) {
+    return safeArray(fallbackSlides).map((slide) => ({
+      ...slide,
+      highlights: safeArray(slide?.highlights),
+    }))
+  }
+
+  return sourceSlides.map((slide) => ({
+    tag: slide?.tag ?? '',
+    headline: slide?.headline ?? '',
+    sub: slide?.sub ?? '',
+    image: slide?.image ?? '',
+    highlights: safeArray(slide?.highlights),
+    ctaText: slide?.ctaText ?? '',
+    ctaHref: slide?.ctaHref ?? '',
+  }))
 }
 
 export function safeArray(value) {
