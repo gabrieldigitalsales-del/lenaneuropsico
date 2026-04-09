@@ -18,17 +18,11 @@ function readLocalContent() {
 }
 
 function hasUsableContent(data) {
-  return !!(
-    data &&
-    typeof data === 'object' &&
-    data.brandName &&
-    Array.isArray(data.heroSlides) &&
-    data.heroSlides.length > 0
-  )
+  return !!(data && typeof data === 'object')
 }
 
 export function useSiteContent() {
-  const [content, setContent] = useState(() => readLocalContent() || defaultSiteContent)
+  const [content, setContent] = useState(() => readLocalContent())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [source, setSource] = useState('local')
@@ -57,7 +51,7 @@ export function useSiteContent() {
           setSource('local')
           setError('')
         } else {
-          setContent(defaultSiteContent)
+          setContent(normalizeSiteContent(defaultSiteContent))
           setSource('default')
           setError('')
         }
@@ -69,7 +63,7 @@ export function useSiteContent() {
         setContent(localContent)
         setSource('local')
       } else {
-        setContent(defaultSiteContent)
+        setContent(normalizeSiteContent(defaultSiteContent))
         setSource('default')
       }
 
